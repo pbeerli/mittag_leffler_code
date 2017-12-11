@@ -1,0 +1,38 @@
+Mittag-Leffler function
+(used in a future version of MIGRATE; www.popgen.sc.fsu.edu)
+
+Compile like this:
+gcc -g -DSTANDALONEMITTAGLEFFLER mittag_leffler.c hermite_interpoly.c romberg.c mittag_leffler_interpol_data.c -o mlf
+
+The code returns values like mathematica, but fails with large values (returns inf). IT RETURNS THE NATURAL LOG!
+
+This code is still experimental and surely can be improved
+in its default it uses a lookup table for some values, tom compile with lookup table use this:
+
+gcc -g -DSTANDALONEMITTAGLEFFLER -DMLF_SLOW mittag_leffler.c hermite_interpoly.c romberg.c mittag_leffler_interpol_data.c -o mlf
+
+
+the code has a terse help
+
+./mlf
+
+Syntax: mlf g           #prints mlf(lambda=[-100..99],alpha=0.6,beta=0.6)
+Syntax: mlf z           #prints mlf(lambda=z,alpha=0.6,beta=0.6)
+Syntax: mlf z a         #prints mlf(lambda=z,alpha=a,beta=a)
+Syntax: mlf z a b       #prints mlf(lambda=z,alpha=a,beta=b)
+
+arzak:src>mlf -5 0.5 0.5  #using lookup table
+log(mlf(z=-5.000000,alpha=0.500000,beta=0.500000)) =  -4.5406573 +0i
+arzak:src>mlf -5 0.5 0.4  # calculating
+log(mlf(z=-5.000000,alpha=0.500000,beta=0.400000)) =  -4.8583428 +3.1415927i
+arzak:src>mlf -5 0.5 1.0  # using lookup table 
+log(mlf(z=-5.000000,alpha=0.500000,beta=1.000000)) =  -2.2009114 +0i
+
+with
+time ./mlf t
+you get a rough timing for 10^6 calls to the mlf function
+the lookuptable version is about 2x faster than the calculating version.
+
+
+Peter Beerli
+beerli@fsu.edu
